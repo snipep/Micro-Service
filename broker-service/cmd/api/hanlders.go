@@ -8,14 +8,22 @@ import (
 )
 
 type RequestPayload struct {
-	Action string      `json:"action"`
-	Auth   AuthPayload `json:"auth,omitempty"`
-	Log    LogPayload  `json:"log,omitempty"`
+	Action 	string      `json:"action"`
+	Auth   	AuthPayload `json:"auth,omitempty"`
+	Log    	LogPayload  `json:"log,omitempty"`
+	Mail 	MailPayLoad `json:"mail,omitempty"`
 }
 
 type AuthPayload struct {
 	Email    string `json:"email"`
 	Password string `json:"password"`
+}
+
+type MailPayLoad struct {
+	From    string `json:"from"`
+	To      string `json:"to"`
+	Subject string `json:"subject"`
+	Message string `json:"message"`
 }
 
 type LogPayload struct {
@@ -48,6 +56,8 @@ func (app *Config) HandleSubmission(w http.ResponseWriter, r *http.Request) {
 		app.authenticate(w, requestPayload.Auth)
 	case "log":
 		app.logItem(w, requestPayload.Log)
+	case "mail":
+		app.sendMail(w, requestPayload.Mail)
 	default:
 		app.errorJSON(w, errors.New("unknown action"))
 	}
@@ -136,6 +146,42 @@ func (app *Config) authenticate(w http.ResponseWriter, a AuthPayload) {
 	payload.Error = false
 	payload.Message = "Authenticated!"
 	payload.Data = jsonFromService.Data
+
+	app.writeJSON(w, http.StatusAccepted, payload)
+}
+
+func (app *Config) sendMail(w http.ResponseWriter, msg MailPayLoad)  {
+	jsonData, _ := json.MarshalIndent(msg, "", "\t")
+
+	//call the mail service
+	mailServiceURL := "http://mailer-service/send"
+
+	// post to mail service
+	request, err := http.NewRequest("POST", mailServiceURL, bytes.NewBuffer(jsonData))
+	if err != nil{
+		app.errorJSON(w, err)
+		return
+	}
+
+	request.Header.Set("Content-Type", "application/json")
+
+	client := &http.Client{}
+	response, err := client.Do(request)
+	if err != nil{
+		app.errorJSON(w, err)
+		return
+	}
+	defer response.Body.Close()
+
+	//make sure we get back the right status code
+	if response.StatusCode != http.StatusAccepted {
+		app.errorJSON(w, errors.New("Error calling mail service"))
+		return 
+	}
+
+	var payload jsonResponse
+	payload.Error = false
+	payload.Message = "Message sent to " + msg.To
 
 	app.writeJSON(w, http.StatusAccepted, payload)
 }
