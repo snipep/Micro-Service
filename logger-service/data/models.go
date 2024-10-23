@@ -36,17 +36,12 @@ type LogEntry struct {
 func (l *LogEntry) Insert(entry LogEntry) error {
 	collection := client.Database("logs").Collection("logs")
 
-	// Set the timestamps
-	entry.CreatedAt = time.Now()
-	entry.UpdatedAt = time.Now()
-	
-	_, err := collection.InsertOne(context.TODO(), entry)
-	// _, err := collection.InsertOne(context.TODO(), LogEntry{
-	// 	Name: entry.Name,
-	// 	Data: entry.Data,
-	// 	CreatedAt: time.Now(),
-	// 	UpdatedAt: time.Now(),
-	// })
+	_, err := collection.InsertOne(context.TODO(), LogEntry{
+		Name: entry.Name,
+		Data: entry.Data,
+		CreatedAt: time.Now(),
+		UpdatedAt: time.Now(),
+	})
 	if err != nil {
 		log.Println("Error inserting into logs:", err)
 		return err

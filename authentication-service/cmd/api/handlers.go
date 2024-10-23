@@ -8,9 +8,10 @@ import (
 	"net/http"
 )
 
+
 func (app *Config) Authenticate(w http.ResponseWriter, r *http.Request) {
 	var requestPayload struct {
-		Email    string `json:"email"`
+		Email string `json:"email"`
 		Password string `json:"password"`
 	}
 
@@ -40,14 +41,15 @@ func (app *Config) Authenticate(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	payload := jsonResponse{
-		Error:   false,
+	payload := jsonResponse {
+		Error: false,
 		Message: fmt.Sprintf("Logged in user %s", user.Email),
-		Data:    user,
+		Data: user,
 	}
 
 	app.writeJSON(w, http.StatusAccepted, payload)
 }
+
 
 func (app *Config) logRequest(name, data string) error {
 	var entry struct {
@@ -63,14 +65,12 @@ func (app *Config) logRequest(name, data string) error {
 
 	request, err := http.NewRequest("POST", logServiceURL, bytes.NewBuffer(jsonData))
 	if err != nil {
-		fmt.Println("authentication>cmd>api>handler>0")
 		return err
 	}
 
 	client := &http.Client{}
 	_, err = client.Do(request)
 	if err != nil {
-		fmt.Println("authentication>cmd>api>handler>1")
 		return err
 	}
 

@@ -8,13 +8,14 @@ import (
 	"os"
 	"time"
 
-	"github.com/snipep/authentication-service/data"
 	_ "github.com/jackc/pgconn"
 	_ "github.com/jackc/pgx/v4"
 	_ "github.com/jackc/pgx/v4/stdlib"
+	"github.com/snipep/authentication-service/data"
 )
 
 const webPort = "80"
+
 var counts int64
 
 type Config struct {
@@ -25,12 +26,13 @@ type Config struct {
 func main() {
 	log.Println("Starting authentication service")
 
+	// connect to DB
 	conn := connectToDB()
 	if conn == nil {
 		log.Panic("Can't connect to Postgres!")
 	}
 
-	//set up config
+	// set up config
 	app := Config{
 		DB: conn,
 		Models: data.New(conn),
@@ -49,7 +51,7 @@ func main() {
 
 func openDB(dsn string) (*sql.DB, error) {
 	db, err := sql.Open("pgx", dsn)
-	if err != nil{
+	if err != nil {
 		return nil, err
 	}
 
@@ -67,7 +69,7 @@ func connectToDB() *sql.DB {
 	for {
 		connection, err := openDB(dsn)
 		if err != nil {
-			log.Println("Postgres not yet ready...")
+			log.Println("Postgres not yet ready ...")
 			counts++
 		} else {
 			log.Println("Connected to Postgres!")
@@ -79,7 +81,7 @@ func connectToDB() *sql.DB {
 			return nil
 		}
 
-		log.Println("Backing off for two seconds")
+		log.Println("Backing off for two seconds....")
 		time.Sleep(2 * time.Second)
 		continue
 	}

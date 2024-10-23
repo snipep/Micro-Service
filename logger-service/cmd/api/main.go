@@ -4,10 +4,10 @@ import (
 	"context"
 	"fmt"
 	"log"
-	"github.com.sinpep/logger-service/data"
 	"net/http"
 	"time"
 
+	"github.com/snipep/logger-service/data"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
 )
@@ -15,7 +15,7 @@ import (
 const (
 	webPort  = "80"
 	rpcPort  = "5001"
-	mongoURL = "mongodb://mongo:27017/?authSource=admin"
+	mongoURL = "mongodb://mongo:27017"
 	gRpcPort = "50001"
 )
 
@@ -50,7 +50,7 @@ func main() {
 
 	// start web server
 	// go app.serve()
-	log.Println("Starting service on port", webPort)
+	log.Println("Starting service on port :", webPort)
 	srv := &http.Server{
 		Addr:    fmt.Sprintf(":%s", webPort),
 		Handler: app.routes(),
@@ -58,7 +58,7 @@ func main() {
 
 	err = srv.ListenAndServe()
 	if err != nil {
-		log.Panic(err)	
+		log.Panic(err)
 	}
 
 }
@@ -76,19 +76,15 @@ func main() {
 // }
 
 func connectToMongo() (*mongo.Client, error) {
-	ctx, cancel := context.WithTimeout(context.Background(), 10 * time.Second)
-	defer cancel()
-
 	// create connection options
 	clientOptions := options.Client().ApplyURI(mongoURL)
 	clientOptions.SetAuth(options.Credential{
 		Username: "admin",
 		Password: "password",
-		AuthMechanism: "SCRAM-SHA-1",
 	})
 
 	// connect
-	c, err := mongo.Connect(ctx, clientOptions)
+	c, err := mongo.Connect(context.TODO(), clientOptions)
 	if err != nil {
 		log.Println("Error connecting:", err)
 		return nil, err

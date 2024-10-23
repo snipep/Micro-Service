@@ -1,4 +1,4 @@
-module github.com.sinpep/logger-service
+module github.com/snipep/logger-service
 
 go 1.23.2
 

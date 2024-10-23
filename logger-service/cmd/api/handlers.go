@@ -1,11 +1,9 @@
 package main
 
 import (
-	"fmt"
-	"log"
 	"net/http"
 
-	"github.com.sinpep/logger-service/data"
+	"github.com/snipep/logger-service/data"
 )
 
 type JSONPayload struct {
@@ -27,8 +25,6 @@ func (app *Config) WriteLog(w http.ResponseWriter, r *http.Request) {
 	err := app.Models.LogEntry.Insert(event)
 	if err != nil {
 		app.errorJSON(w, err)
-		log.Println("logger>cmd>api>handler")
-		fmt.Println("logger>cmd>api>handler")
 		return
 	}
 

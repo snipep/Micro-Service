@@ -249,7 +249,7 @@ func (u *User) ResetPassword(password string) error {
 	return nil
 }
 
-// PasswordMatches uses Go's bcry	pt package to compare a user supplied password
+// PasswordMatches uses Go's bcrypt package to compare a user supplied password
 // with the hash we have stored for a given user in the database. If the password
 // and hash match, we return true; otherwise, we return false.
 func (u *User) PasswordMatches(plainText string) (bool, error) {

@@ -41,6 +41,7 @@
     let sent = document.getElementById("payload");
     let recevied = document.getElementById("received");
 
+
     logBtn.addEventListener("click", function() {
         const payload = {
             action: "log",
@@ -54,7 +55,7 @@
         headers.append("Content-Type", "application/json");
 
         const body = {
-            method: 'POST',
+            method: "POST",
             body: JSON.stringify(payload),
             headers: headers,
         }
@@ -71,7 +72,7 @@
             }
         })
         .catch((error) => {
-            output.innerHTML += "<br><br>Error: " + error;
+            output.innerHTML += "<br><br>Eror: " + error;
         })        
     })
 
@@ -106,7 +107,7 @@
             }
         })
         .catch((error) => {
-            output.innerHTML += "<br><br>Error: " + error;
+            output.innerHTML += "<br><br>Eror: " + error;
         })
     })
 
@@ -128,7 +129,7 @@
             }
         })
         .catch((error) => {
-            output.innerHTML += "<br><br>Error: " + error;
+            output.innerHTML += "<br><br>Eror: " + error;
         })
     })
         

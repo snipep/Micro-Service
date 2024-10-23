@@ -4,7 +4,6 @@ import (
 	"bytes"
 	"encoding/json"
 	"errors"
-	"fmt"
 	"net/http"
 )
 
@@ -41,7 +40,6 @@ func (app *Config) HandleSubmission(w http.ResponseWriter, r *http.Request) {
 	err := app.readJSON(w, r, &requestPayload)
 	if err != nil {
 		app.errorJSON(w, err)
-		fmt.Println("broker>cmd>api>handler>0")
 		return
 	}
 
@@ -63,7 +61,6 @@ func (app *Config) logItem(w http.ResponseWriter, entry LogPayload) {
 	request, err := http.NewRequest("POST", logServiceURL, bytes.NewBuffer(jsonData))
 	if err != nil {
 		app.errorJSON(w, err)
-		fmt.Println("broker>cmd>api>handler>1")
 		return
 	}
 
@@ -74,13 +71,11 @@ func (app *Config) logItem(w http.ResponseWriter, entry LogPayload) {
 	response, err := client.Do(request)
 	if err != nil {
 		app.errorJSON(w, err)
-		fmt.Println("broker>cmd>api>handler>2")
 		return
 	}
 	defer response.Body.Close()
 
 	if response.StatusCode != http.StatusAccepted {
-		fmt.Println("broker>cmd>api>handler>3")
 		app.errorJSON(w, err)
 		return
 	}
