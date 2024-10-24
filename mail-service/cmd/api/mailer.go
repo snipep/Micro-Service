@@ -10,27 +10,30 @@ import (
 	mail "github.com/xhit/go-simple-mail/v2"
 )
 
+// Mail represents a mail service configuration.
 type Mail struct {
-	Domain      string
-	Host        string
-	Port        int
-	Username    string
-	Password    string
-	Encryption  string
-	FromAddress string
-	FromName    string
+	Domain      string // Domain name of mail service.
+	Host        string // Hostname of mail service.
+	Port        int    // Port number of mail service.
+	Username    string // Username for mail service authentication.
+	Password    string // Password for mail service authentication.
+	Encryption  string // Encryption protocol for mail service communication.
+	FromAddress string // Default from address for mail service.
+	FromName    string // Default from name for mail service.
 }
 
+// Message represents a mail message to be sent.
 type Message struct {
-	From        string
-	FromName    string
-	To          string
-	Subject     string
-	Attachments []string
-	Data        any
-	DataMap     map[string]any
+	From        string   // From address of mail message.
+	FromName    string   // From name of mail message.
+	To          string   // To address of mail message.
+	Subject     string   // Subject of mail message.
+	Attachments []string // Attachments of mail message.
+	Data        any      // Data to be used in mail message template.
+	DataMap     map[string]any // Data map to be used in mail message template.
 }
 
+// SendSMTPMessage sends a mail message using SMTP protocol.
 func (m *Mail) SendSMTPMessage(msg Message) error {
 	if msg.From == "" {
 		msg.From = m.FromAddress
@@ -48,17 +51,18 @@ func (m *Mail) SendSMTPMessage(msg Message) error {
 
 	formattedMessage, err := m.buildHTMLMessage(msg)
 	if err != nil {
-		return err	
-	}	
+		return err
+	}
 
 	plainMessage, err := m.buildPlainTextMessage(msg)
 	if err != nil {
 		return err
 	}
+
 	server := mail.NewSMTPClient()
 	server.Host = m.Host
 	server.Port = m.Port
-	server.Username = m.Username	
+	server.Username = m.Username
 	server.Password = m.Password
 	server.Encryption = m.getEncryption(m.Encryption)
 	server.KeepAlive = false
@@ -89,10 +93,12 @@ func (m *Mail) SendSMTPMessage(msg Message) error {
 	if err != nil {
 		log.Println(err)
 		return err
-	} 
+	}
+
 	return nil
 }
 
+// buildHTMLMessage builds an HTML mail message from a given data.
 func (m *Mail) buildHTMLMessage(msg Message) (string, error) {
 	templateToRender := "./templates/mail.html.gohtml"
 
@@ -114,6 +120,7 @@ func (m *Mail) buildHTMLMessage(msg Message) (string, error) {
 	return formattedMessage, nil
 }
 
+// inlineCSS inlines CSS styles in an HTML mail message.
 func (m *Mail) inlineCSS(s string) (string, error) {
 	options := premailer.Options {
 		RemoveClasses: false, 
@@ -134,6 +141,7 @@ func (m *Mail) inlineCSS(s string) (string, error) {
 	return html, nil
 }
 
+// buildPlainTextMessage builds a plain text mail message from a given data.
 func (m *Mail) buildPlainTextMessage(msg Message) (string, error) {
 	templateToRender := "./templates/mail.plain.gohtml"
 
@@ -151,6 +159,7 @@ func (m *Mail) buildPlainTextMessage(msg Message) (string, error) {
 	return plainMessage, nil
 }
 
+// getEncryption returns an encryption type from a given string.
 func (m *Mail) getEncryption(s string) mail.Encryption {
 	switch s {
 	case "tls":
@@ -162,5 +171,4 @@ func (m *Mail) getEncryption(s string) mail.Encryption {
 	default:
 		return mail.EncryptionSTARTTLS
 	}
-	
 }

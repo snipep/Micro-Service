@@ -20,6 +20,9 @@
         },
         {
             "path": "mail-service"
+        },
+        {
+            "path": "listener-service"
         }
     ]
 }

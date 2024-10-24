@@ -8,9 +8,9 @@ import (
 )
 
 type jsonResponse struct {
-	Error bool `json:"error"`
-	Message string `json:"message"`
-	Data any `json:"data,omitempty"`
+	Error 	bool 	`json:"error"`
+	Message string 	`json:"message"`
+	Data 	any 	`json:"data,omitempty"`
 }
 
 // readJSON tries to read the body of a request and converts it into JSON
