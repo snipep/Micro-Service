@@ -25,7 +25,7 @@ func main() {
 		os.Exit(1)
 	}
 	defer rabbitConn.Close()
-
+	log.Println("Connected to RabbitMQ!")
 	app := Config{
 		Rabbit: rabbitConn,
 	}
