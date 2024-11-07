@@ -1,23 +1,23 @@
-Learning Microservices and ways they can communicate with each other 
+# Learning Microservices and ways they can communicate with each other 
 
-Microservices:
-    - Broker-service:
-        - acting as a intermediate / controller of all the services in the application
-        - Uses HTTP and rabbitMQ for communication
-    -Authentication-service:
-        - Uses it's own database to authenticate users : PostgreSQL 
-        - It authenticate the user from it's database and sends a reponse of success or failure
-        - Flow:
-            - frontend > broker > authentication-service > "authenticate user in postgres" > authentication-service > "to logg the entry of user, it makes http request to call logger-service " > logger-service > authentication-service > "sends reponse back to" > broker > frontend
-    - Logger-service:
-        - Uses it's own database to store logs : MongoDB
-        - Logs the entry [authenticated, sended mail] in the database 
-        - Flow:
-            - frontend > broker > logger-service > "sends entry to the mongoDB & reponse back to " > broker-service > frontend
-    - Mailer-service:
-        - service is used To send/test mails : MailHog
-        - flow:
-            - frontend > broker > mailer-service > "Create a mail and send it via SMTP protocol& gives a reponse back" > broker > frontend
-    - Listener-service:
-        - service uses RabbitMQ for communication
-        - it listens to the queue and sends the messages to the logger-service
+# Microservices:
+#     - Broker-service:
+#         - acting as a intermediate / controller of all the services in the application
+#         - Uses HTTP and rabbitMQ for communication
+#     -Authentication-service:
+#         - Uses it's own database to authenticate users : PostgreSQL 
+#         - It authenticate the user from it's database and sends a reponse of success or failure
+#         - Flow:
+#             - frontend > broker > authentication-service > "authenticate user in postgres" > authentication-service > "to logg the entry of user, it makes http request to call logger-service " > logger-service > authentication-service > "sends reponse back to" > broker > frontend
+#     - Logger-service:
+#         - Uses it's own database to store logs : MongoDB
+#         - Logs the entry [authenticated, sended mail] in the database 
+#         - Flow:
+#             - frontend > broker > logger-service > "sends entry to the mongoDB & reponse back to " > broker-service > frontend
+#     - Mailer-service:
+#         - service is used To send/test mails : MailHog
+#         - flow:
+#             - frontend > broker > mailer-service > "Create a mail and send it via SMTP protocol& gives a reponse back" > broker > frontend
+#     - Listener-service:
+#         - service uses RabbitMQ for communication
+#         - it listens to the queue and sends the messages to the logger-service
