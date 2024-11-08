@@ -1,5 +1,6 @@
 # Ignore auto-generated executable files
-*.exe
+**/*.exe
+**/*App
 *.out
 *.bin
 
