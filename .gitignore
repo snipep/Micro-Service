@@ -1,13 +1,13 @@
 # Ignore auto-generated executable files
-*.exe
+**/*App
+**/*.exe
 *.out
 *.bin
-
 # Ignore log files
 *.log
 
 # Ignore temporary or auto-generated data files
-/db-data/
+**/db-data/
 *.db
 *.sqlite
 
@@ -18,8 +18,3 @@ docker-compose.override.yml
 # Ignore build directories or node_modules in case of JavaScript services
 /build/
 node_modules/
-
-# Ignore compiled Go files (if using Go in the project)
-*.o
-*.a
-*.so
