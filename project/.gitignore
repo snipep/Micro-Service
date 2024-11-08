@@ -1,5 +1,6 @@
 # Ignore auto-generated executable files
-*.exe
+**/*.exe
+**/*App
 *.out
 *.bin
 
@@ -18,8 +19,3 @@ docker-compose.override.yml
 # Ignore build directories or node_modules in case of JavaScript services
 /build/
 node_modules/
-
-# Ignore compiled Go files (if using Go in the project)
-*.o
-*.a
-*.so

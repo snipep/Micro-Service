@@ -25,7 +25,7 @@ func (app *Config) Authenticate(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// validate the user against the database
-	user, err := app.Models.User.GetByEmail(requestPayload.Email)
+	user, err := app.Repo.GetByEmail(requestPayload.Email)
 	if err != nil {
 		// if the user doesn't exist, return an error
 		log.Println(err)
@@ -34,7 +34,7 @@ func (app *Config) Authenticate(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// check the password
-	valid, err := user.PasswordMatches(requestPayload.Password)
+	valid, err := app.Repo.PasswordMatches(requestPayload.Password, *user)
 	if err != nil || !valid {
 		// if the password is invalid, return an error
 		log.Println(err)
@@ -84,8 +84,8 @@ func (app *Config) logRequest(name, data string) error {
 	}
 
 	// send the request
-	client := &http.Client{}
-	_, err = client.Do(request)
+	// client := &http.Client{}x
+	_, err = app.Client.Do(request)
 	if err != nil {
 		return err
 	}
