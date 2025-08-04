@@ -24,7 +24,15 @@ Then Start the front end:
 Hit the front end with your web browser at http://localhost:80
 
 To stop Everything:
-`
-make stop
-makw down
-`
+`make stop`
+`make down`
+
+While working on code, you can rebuild just the service you are working on by executing
+`make auth`
+
+Where auth is one of the services:
+- auth
+- broker
+- logger
+- listener
+- mail
