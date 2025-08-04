@@ -12,7 +12,7 @@ In addition to the microservices, the included docker-compose.yml at the project
 Postgresql - used by the authentication service to store user accounts
 MongoDB - used by the logger service to save logs from all services
 mailhog - used as a fake mail server to work with the mail service
-----
+
 ## Running the Project
 
 From the Project Directory of the project, execute this command (this assumes that you have GNU make and a recent version of Docker installed on your machine):
